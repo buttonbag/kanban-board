@@ -1,0 +1,16 @@
+/**@type {import('tailwindcss').Config} */
+
+export default {
+  content: [
+
+  ],
+  theme: {
+    extend: {
+      colors: {
+        "mainBackgroundColor": '#0D1117',
+        "columnBackgroundColor": '#161C22'
+      }
+    },
+  },
+  plugins: []
+}
