@@ -2,6 +2,7 @@
 import { useState } from "react";
 import PlusIcon from "../icons/PlusIcon";
 import type { Column } from "../types";
+import ColumnContainer from "./ColumnContainer";
 
 export default function KanbanBoard() {
   const [columns, setColumns] = useState<Column[]>([]);
@@ -34,7 +35,7 @@ export default function KanbanBoard() {
     ">
       <div className="m-auto flex gap-4">
         <div className="flex gap-4">{columns.map((col)=>(
-          <div key={col.id}>{col.title}</div>
+          <ColumnContainer column={col}></ColumnContainer>
         ))}</div>
         <button onClick={()=>{
           createNewColumn();
