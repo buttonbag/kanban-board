@@ -1,10 +1,7 @@
-/**@type {import('tailwindcss').Config} */
-
-export default {
-  content: [
-
-  ],
-  theme: {
+module.exports = {
+  purge: [],
+  darkMode: false, // or 'media' or 'class'
+    theme: {
     extend: {
       colors: {
         "mainBackgroundColor": '#0D1117',
@@ -12,5 +9,8 @@ export default {
       }
     },
   },
-  plugins: []
+  variants: {
+    extend: {},
+  },
+  plugins: [],
 }

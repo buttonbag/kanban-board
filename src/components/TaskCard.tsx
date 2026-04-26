@@ -1,6 +1,8 @@
 import { useState } from "react";
 import DeleteIcon from "../icons/DeleteIcon";
 import type { Id, Task } from "../types"
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   task: Task;
@@ -11,15 +13,46 @@ interface Props {
 export default function TaskCard({task, deleteTask, updateTask}: Props) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
+    id: task.id,
+    data: {
+      type: "Task", 
+      task,
+    },
+    disabled: editMode,
+  })
+
+  const style = {
+      transition,
+      transform: CSS.Transform.toString(transform),
+    }
 
   const toggleEditMode = () => {
     setEditMode((prev) => !prev);
     setMouseIsOver(false);
   }
 
+  if (isDragging) {
+    return <div 
+    ref={setNodeRef} 
+    style={style}
+    className="
+    bg-columnBackgroundColor
+    opacity-60
+    border-2
+    border-rose-500
+    h-[100px]
+    max-h-[100px]
+    items-center
+    text-left
+    rounded-xl
+    flex"
+    ></div>
+  }
   if (editMode) {
     return (
-<div id="task-card" className="
+    <div ref={setNodeRef} id="task-card" className="
     bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover: ring-inset hover: ring-rose-500 cursor-grab relative
     "
     >
@@ -29,7 +62,7 @@ export default function TaskCard({task, deleteTask, updateTask}: Props) {
       placeholder="Task content here"
       onBlur={toggleEditMode}
       onKeyDown={(e)=>{
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && e.shiftKey) {
           toggleEditMode();
         }
       }}
@@ -40,8 +73,13 @@ export default function TaskCard({task, deleteTask, updateTask}: Props) {
   }
 
   return (
-    <div id="task-card" className="
-    bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover: ring-inset hover: ring-rose-500 cursor-grab relative
+    <div
+    ref={setNodeRef}
+    style={style}
+    {...attributes}
+    {...listeners}
+    id="task-card" className="
+    bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover: ring-inset hover: ring-rose-500 cursor-grab relative task
     "
     onClick={toggleEditMode}
     onMouseEnter={()=>{
@@ -51,7 +89,9 @@ export default function TaskCard({task, deleteTask, updateTask}: Props) {
       setMouseIsOver(false);
     }}
     >
-      {task.content}
+      <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
+        {task.content}
+      </p>
      {mouseIsOver && 
      <button className="absolute right-4 top-1/2-translate-y-1/2 bg-columnBackgroundColor p-2 rounded stroke-gray-500
         hover:stroke-white" 
