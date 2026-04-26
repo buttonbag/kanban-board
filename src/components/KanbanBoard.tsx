@@ -45,6 +45,7 @@ export default function KanbanBoard() {
                 deleteColumn={deleteColumn}
                 updateColumn={updateColumn}
                 createTask={createTask}
+                updateTask={updateTask}
                 deleteTask={deleteTask}
                 tasks={tasks.filter((task)=> 
                   task.columnId === col.id )}
@@ -83,6 +84,7 @@ export default function KanbanBoard() {
               deleteColumn={deleteColumn}
               updateColumn={updateColumn}
               createTask={createTask} 
+              updateTask={updateTask}
               deleteTask={deleteTask}
               tasks={tasks.filter((task)=> 
                 task.columnId === activeColumn.id )}
@@ -105,6 +107,16 @@ export default function KanbanBoard() {
     }
     setTasks([...tasks, newTask]);
     console.log(newTask);
+  }
+
+  function updateTask(id: Id, content: string) {
+    const newTasks = tasks.map((task) => {
+      if (task.id !== id) {
+        return task;
+      }
+      return {...task, content}
+    });
+    setTasks(newTasks)
   }
 
   function deleteTask(id: Id){
