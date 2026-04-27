@@ -210,13 +210,32 @@ export default function KanbanBoard() {
     const isActiveATask = active.data.current?.type === "Task";
     const isOverATask = over.data.current?.type === "Task";
 
+    if (!isActiveATask) return;
+    
+
     // dropping a Task over another Task
     if (isActiveATask && isOverATask) {
       setTasks(tasks => {
         const activeIndex = tasks.findIndex(t => t.id === activeId);
         const overIndex = tasks.findIndex(t => t.id === overId);
 
+        tasks[activeIndex].columnId = tasks[overIndex].columnId;         
+
         return arrayMove(tasks, activeIndex, overIndex);
+      })
+    }
+
+    const isOverAColumn = over.data.current?.type === "Column";
+
+    // dropping a task over a column
+    if (isActiveATask && isOverAColumn) {
+        setTasks(tasks => {
+        const activeIndex = tasks.findIndex(t => t.id === activeId);
+
+
+        tasks[activeIndex].columnId = overId;         
+
+        return arrayMove(tasks, activeIndex, activeIndex);
       })
     }
   }
