@@ -7,6 +7,7 @@ import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type Dra
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+import DragColumnContainer from "./DragColumnContainer";
 
 export default function KanbanBoard() {
   const [columns, setColumns] = useState<Column[]>([]);
@@ -86,13 +87,8 @@ export default function KanbanBoard() {
         {createPortal(
           <DragOverlay>
             {activeColumn &&
-              <ColumnContainer
+              <DragColumnContainer
               column={activeColumn}
-              deleteColumn={deleteColumn}
-              updateColumn={updateColumn}
-              createTask={createTask} 
-              updateTask={updateTask}
-              deleteTask={deleteTask}
               tasks={tasks.filter((task)=> 
                 task.columnId === activeColumn.id )}
                 />
